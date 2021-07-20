@@ -1,5 +1,5 @@
 class AgendasController < ApplicationController
-  # before_action :set_agenda, only: %i[show edit update destroy]
+  before_action :set_agenda, only: %i[  destroy]
 
   def index
     @agendas = Agenda.all
@@ -20,17 +20,22 @@ class AgendasController < ApplicationController
       render :new
     end
   end
+
   def destroy
     @agenda.destroy
-  redirect_to agendas_pass
+    @team = @agenda.team
+    @users = @team.members
+    if cureent_user.id == @agenda.user_id || current_user.id == @owner.id
+      redirect_to dashboard_path
+    end
 
   private
-
+  # binding.irb
   def set_agenda
-    @agenda = Agenda.find(params[:id])
+        @agenda = Agenda.find(params[:id])
   end
 
   def agenda_params
-    params.fetch(:agenda, {}).permit %i[title description]
+    params.fetch(:agenda, {}).permit %i[title description agenda_id]
   end
 end
