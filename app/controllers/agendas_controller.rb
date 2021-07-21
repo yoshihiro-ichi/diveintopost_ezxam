@@ -22,15 +22,17 @@ class AgendasController < ApplicationController
   end
 
   def destroy
-    @agenda.destroy
     @team = @agenda.team
     @users = @team.members
-    if cureent_user.id == @agenda.user_id || current_user.id == @owner.id
+    if current_user.id == @agenda.user_id || current_user.id == @team.owner.id
+      @agenda.destroy
+      AssignMailer.delete_agenda_mail(@users).deliver
       redirect_to dashboard_path
+    else
+      redairect_to dashboard_path
     end
-
+  end
   private
-  # binding.irb
   def set_agenda
         @agenda = Agenda.find(params[:id])
   end

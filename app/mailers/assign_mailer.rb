@@ -6,4 +6,8 @@ class AssignMailer < ApplicationMailer
     @password = password
     mail to: @email, subject: I18n.t('views.messages.complete_registration')
   end
+  def delete_agenda_mail(users)
+      @email = users.pluck(:email)
+      mail to: @email, subject: I18n.t('views.messages.delete')
+  end
 end
