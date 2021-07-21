@@ -29,7 +29,7 @@ class AgendasController < ApplicationController
       AssignMailer.delete_agenda_mail(@users).deliver
       redirect_to dashboard_path
     else
-      redairect_to dashboard_path
+      redirect_to dashboard_path
     end
   end
   private
